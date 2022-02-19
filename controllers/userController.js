@@ -44,6 +44,26 @@ const models =  require('../models/index');
       })
  }
 
+ exports.joindata = async(req, res, next) =>{
+  
+    const users = await models.User.findAll({
+    attributes: {exclude:['password']},
+    include:[{
+      model:models.Blog,
+      as:'blog',
+      attributes: {exclude:['user_id']},
+    }],
+    order:[
+      ['id','desc'],
+      ['blog','id','desc']
+    ]
+    });
+
+   res.status(200).json({
+       data:users
+     })
+ }
+
   exports.showdata = async(req,res,next)=>{
     // //เขียนแบบที่ 1
     // res.status(200).json({
